@@ -1,15 +1,23 @@
-import { TEXT, ELEMENT } from './constants';
+import { TEXT, ELEMENT,CLASS_COMPONENT,FUNCTION_COMPONENT } from './constants';
 import { ReactElement } from './vdom';
+import {Component} from './component'
 
+// let element = React.createElement('button',{id:'sayHello',className:'btn',onClick},
+//   'say',React.createElement('span',{style:{color:'red',fontSize:'30px'}},'Hello')
+// )
 function createElement(type, config = {}, ...children) {
     console.log('config: ', config);
     delete config._source;
     delete config._self;
-
+ 
     let { key, ref, ...props } = config;
     let $$typeof = null;
     if (typeof type === 'string') { // span div
         $$typeof = ELEMENT; // 是一个原声的DOM类型       
+    }else if(typeof type === 'function' && type.prototype.isReactComponent){
+        $$typeof = CLASS_COMPONENT;
+    }else if(typeof type === 'function'){
+        $$typeof = FUNCTION_COMPONENT;
     }
     props.children = children.map(item => {
         if (typeof item === 'object') {
@@ -23,8 +31,13 @@ function createElement(type, config = {}, ...children) {
     return ReactElement($$typeof, type, key, ref, props);
 }
 
+
 const React = {
     createElement,
+    Component
+}
+export {
+    Component
 }
 
 export default React;

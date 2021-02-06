@@ -13,7 +13,6 @@ export function setProps(dom, props) {
             setProp(dom, key, value)
         }
     }
-
 }
 
 function setProp(dom, key, value) {
@@ -27,5 +26,22 @@ function setProp(dom, key, value) {
     } else {
         dom.setAttribute(key, value)
     }
-
 }
+
+// 展开/打平一个任意的多维数组
+export function flatten(array){
+    let flatted = [];
+    (function flat (array){
+        array.forEach(item=>{
+            if(Array.isArray(item)){
+                flat(item)
+            }else {
+                flatted.push(item);
+            }
+        })
+    })(array);
+    
+    return flatted
+}
+
+

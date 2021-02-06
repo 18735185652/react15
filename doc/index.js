@@ -22,26 +22,34 @@ console.log('element: ', element);
 //   </button>
 // )
 
-class ClassComponent extends React.Component {
-  constructor(props){
-    super(props); // this.props = props
-  }
-  render (){
-    return (
-      React.createElement('div',{id:'counter'},'ClassComponent')
-    )
-  }
-}
-function FunctionCounter(){
-   return  React.createElement('div',{id:'counter'},'FunctionCounter')
-}
-
-let element1 = React.createElement('div',{id:'counter'},'hello');
-let element2 = React.createElement(ClassComponent);
-let element3 = React.createElement(FunctionCounter);
+// class Counter extends React.Component {
+//   constructor(props){
+//     super(props);
+//     this.state = {
+//       number:0
+//     }
+//   }
+//   tick = (event) =>{
+//     setInterval(()=>{
+//        console.log('tick: ', event);
+//     },1000)
+//   }
+//   onClick = (event) =>{
+//     console.log('event: ', event);
+//     this.tick(event)
+//   }
+//   render (){
+//     return (
+//       <div>
+//         <p>{this.state.number}</p>
+//         <button onClick={this.onClick}>+</button>
+//       </div>
+//     )
+//   }
+// }
 
 ReactDOM.render(
-  element2,
+  element,
   document.getElementById('root')
 );
 
