@@ -24,6 +24,8 @@ export function createDom(element) {
     }else if ($$typeof ===  CLASS_COMPONENT) {
         dom = createClassComponentDOM(element)    
     }
+    // 不管是什么类型的元素，都让它的dom属性指向它创建出来的真实DOM元素
+    element.dom = dom
     return dom
 }
 
@@ -78,4 +80,28 @@ function createClassComponentDOM(element){
     console.log('element: ', element);
     return newDom
     // element.componentInstance.renderElement.dom = 真实的dom元素
+}
+
+
+export function compareTwoElement(oldRenderElement,newRenderElement){
+    oldRenderElement = onlyOne(oldRenderElement);
+    newRenderElement = onlyOne(newRenderElement);
+
+    let currentDom = oldRenderElement.dom; // 先取出老的DOM节点
+    let currentElement = oldRenderElement;
+    if(newRenderElement === null){
+        // 如果新的虚拟DOM节点为null，则要干掉老节点
+        currentDom.parentNode.removeChild(currentDom)
+        currentDom = null;
+    }else if(oldRenderElement.type !== newRenderElement.type){ // span => div function=>class
+        let newDom = createDom(newRenderElement); // 如果节点类型不同，则需要创建新的DOM节点，然后把老得DOM节点替换掉
+        currentDom.parentNode.replaceChild(newDom,currentDom)
+    }else { 
+        // 新老节点都有，并且类型一样  ，都是div 或者 span 就要进行dom diff 深度比较 
+        //比较他们的属性和他们的子节点而且还要尽可能的复用老节点
+        let newDom = createDom(newRenderElement); 
+        currentDom.parentNode.replaceChild(newDom,currentDom)
+        currentElement = newRenderElement;
+    }
+    return currentElement
 }

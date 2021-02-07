@@ -1,5 +1,5 @@
 import {isFunction} from './utils'
-
+import {compareTwoElement} from './vdom'
 //更新队列
 export let updateQueue = {
     updaters:[], // 这里放着将要执行的更新器对象
@@ -10,9 +10,11 @@ export let updateQueue = {
     // 需要有人调用batchUpdate 方法才会真正更新
     batchUpdate(){ // 强行全部更新 执行真正的更新
         let {updaters} = this;
+        console.log('updatersaaa: ', this);
         this.isPending = true; // 进入批量更新
         let updater;
         while(updater = updaters.pop()){
+            console.log('updater2222: ', updater);
             updater.updateComponent() // 更新所有的dirty组件
         }
         this.isPending = false; // 改为非批量更新
@@ -80,6 +82,7 @@ class Component {
         this.$update = new Updater(this);
         this.state = {}; // 当前状态
         this.nextProps = null; //下一个属性对象
+        console.log('thisaa',this);
     }
     // 批量更新 partial部分 因为状态可能会被合并
     setState(partialState){
@@ -88,7 +91,19 @@ class Component {
     // 进行组件更新
     forceUpdate(){ 
         console.log('forceUpdate: ');
-       
+        let {props,state,renderElement:oldRenderElement} = this;
+        if(this.componentWillUpdate){ //组件将要更新
+            this.componentWillUpdate()
+  
+        }
+        console.log('this: ', this);    
+        let newRenderElement = this.render();
+        console.log('newRenderElement: ', newRenderElement);
+        let currentElement = compareTwoElement(oldRenderElement,newRenderElement)   
+        this.renderElement = currentElement;
+        if(this.componentDidUpdate){
+            this.componentDidUpdate(); // 组件更新完成
+        }
     }
 }
 

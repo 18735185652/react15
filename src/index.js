@@ -46,18 +46,17 @@ class Counter extends React.Component{
     console.log('this.state.number: ', this.state.number);
     this.setState({number:this.state.number+1});
     console.log('this.state.number: ', this.state.number);
-    setTimeout(()=>{
-      this.setState({number:this.state.number+1});
-      console.log('this.state.number: ', this.state.number);
-      this.setState({number:this.state.number+1});
-      console.log('this.state.number: ', this.state.number);
-    })
+    // setTimeout(()=>{
+    //   this.setState({number:this.state.number+1});
+    //   console.log('this.state.number: ', this.state.number);
+    //   this.setState({number:this.state.number+1});
+    //   console.log('this.state.number: ', this.state.number);
+    // })
     
   }
   render(){
     return (
-      React.createElement('div',{onClick:this.handleClick},'+')
-      
+      React.createElement('div',{id:this.state.number,onClick:this.handleClick},'+')
     )
   }
 }
