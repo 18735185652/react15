@@ -10,6 +10,7 @@ export function ReactElement($$typeof, type, key, ref, props) {
 
 export function createDom(element) {
     element = onlyOne(element); // children是一个数组，取出第一个
+    console.log('element111: ', element);
     let { $$typeof } = element;
     let dom = null;
     if (!$$typeof) { // element是一个字符串或者数字
@@ -70,7 +71,9 @@ function createClassComponentDOM(element){
     // 在类组件实例上添加renderElement，指向上一次要渲染的虚拟DOM节点
     // 在后面组件更新的时候，我们会重新render。然后根上一次的renderElement进行 dom diff 对比
     componentInstance.renderElement = renderElement;
+    console.log('renderElement: ', renderElement);
     let newDom = createDom(renderElement);
+    console.log('newDom: ', newDom);
     renderElement.dom = newDom; 
     console.log('element: ', element);
     return newDom

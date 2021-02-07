@@ -44,4 +44,6 @@ export function flatten(array){
     return flatted
 }
 
-
+export function isFunction(obj){
+    return typeof obj === 'function';
+}
